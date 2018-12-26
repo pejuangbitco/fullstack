@@ -25,9 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING
   }, {
     hooks: {
-      beforeValidate: function (user) {
+      beforeCreate: function (user) {
         const SALT_FACTOR = 5
-        console.log('TERHASHHHHHHHH')
         if (!user.changed('password')) {
           return sequelize.Promise.reject('not modified')
         }

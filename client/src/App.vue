@@ -3,12 +3,33 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-      <router-link to="/login">Masuk</router-link>
-      <router-link to="/register">Daftar</router-link>
+      <router-link  v-if="!$store.state.isUserLoggedIn" to="/login">Masuk</router-link>
+      <router-link  v-if="!$store.state.isUserLoggedIn" to="/register">Daftar</router-link>
+      <v-btn v-if="$store.state.isUserLoggedIn" @click="logout">logout</v-btn>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+
+      this.$route.push({
+        name: 'home'
+      })
+    }
+  }
+}
+</script>
 
 <style>
 #app {

@@ -2,28 +2,25 @@
   <v-container>
     <v-layout column>
       <v-flex xs6 offset-xs1>
-        <div class="white elevation-2">
-          <v-toolbar flat dense class="cyan" dark>
-            <v-toolbar-title>Register</v-toolbar-title>
-          </v-toolbar>
-          <div class="pl-4 pr-4 pt-2 pb-2">
-            <input
-              type="email"
-              name="email"
+        <panel title="Daftar">
+          <form name="daftar-user" autocomplete="off">
+            <v-text-field
+              label="email"
               v-model="email"
-              placeholder="email">
+            ></v-text-field>
             <br>
-            <input
-              type="password"
-              name="password"
+            <v-text-field
+              label="password"
               v-model="password"
-              placeholder="password">
+              type="password"
+              aria-autocomplete="new-password"
+            ></v-text-field>
             <br>
             <div class="error" v-html="error" />
             <br>
             <v-btn class="cyan" @click="register">Daftar</v-btn>
-          </div>
-        </div>
+          </form>
+        </panel>
       </v-flex>
     </v-layout>
   </v-container>
@@ -31,6 +28,8 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
+import Panel from '@/components/Panel'
+
 export default {
   data () {
     return {
@@ -42,14 +41,19 @@ export default {
   methods: {
     async register () {
       try {
-        await AuthenticationService.register({
+        const response = await AuthenticationService.register({
           email: this.email,
           password: this.password
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (error) {
         this.error = error.response.data.error
       }
     }
+  },
+  components: {
+    Panel
   }
 }
 </script>

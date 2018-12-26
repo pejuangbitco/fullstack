@@ -4,11 +4,14 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import Vuetify from 'vuetify'
+import { sync } from 'vuex-router-sync'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)
+
+sync(store, router)
 
 new Vue({
   router,
